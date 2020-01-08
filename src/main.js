@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import App from './App.vue'
 import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
 import router from './router'
-import store from './vuex/store'
+import store from './vuex/index'
 import axios from 'axios'
 import VueWechatTitle from 'vue-wechat-title'
+
+import 'element-ui/lib/theme-chalk/index.css';
 import './assets/reset.css'
 
 Vue.use(ElementUI)

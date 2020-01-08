@@ -267,10 +267,7 @@ export default {
     },
     getuserinfo() {
       userinfo().then(res => {
-        // 先存在localStorage
-        window.localStorage.setItem('userinfo', res.data.username)
-        // 再存在vuex中
-        this.$store.commit('getuserinfo', res.data.username)
+        this.$store.dispatch('saveInfo', res.data.username)
       })
     }
   }
