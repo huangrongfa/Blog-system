@@ -15,40 +15,19 @@ axios.defaults.timeout = 10000
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 
 // 请求拦截器
-axios.interceptors.request.use(
-  // config => {
-
-  // },
-  // error => {
-
-  // }
-)
+axios.interceptors.request.use(function(response) {
+  response.headers.authorization = localStorage.getItem('token')
+  return response
+}, function(error) {
+  return Promise.reject(error)
+})
 
 // 响应拦截器
-axios.interceptors.response.use(
-  // response => {
-  //   if (response.status == 200) {
-  //     return Promise.resolve(response)
-  //   } else {
-  //     return Promise.reject(response)
-  //   }
-  // },
-  // error => {
-  //   if (error.response.status) {
-  //     switch (error.response.status) {
-  //       case 401:
-  //         alert('401')
-  //         break;
-  //       case 404:
-  //         alert('404')
-  //         break;
-  //       default:
-  //         alert('default')
-  //         break;
-  //     }
-  //   }
-  // }
-)
+axios.interceptors.response.use(function(response){
+  return response
+}, function(error) {
+  return Promise.reject(error)
+})
 
 //get请求方法
 export function get(url, params) {

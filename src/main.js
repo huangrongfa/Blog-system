@@ -14,6 +14,14 @@ Vue.use(VueWechatTitle)
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 
+
+// 导航全局守卫
+// router.beforeEach((to, from, next) => {
+//   console.log(store.state)
+//   next()
+// })
+
+
 new Vue({
   render: h => h(App),
   router,

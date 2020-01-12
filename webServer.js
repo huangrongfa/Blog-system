@@ -8,11 +8,14 @@ const session = require('express-session')
 const redisStore = require('connect-redis')(session)
 const rotatingLogStream = require('file-stream-rotator')
 const morgan = require('morgan')
+const jwt = require('jsonwebtoken')
+
+// 
+let secretkey = 'vrn5ifmbfsq'
 
 // 写入日志文件到本地
 let logDirectory = path.join(__dirname, './src/server/logs')
 fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
-
 let accesslog = rotatingLogStream.getStream({
   filename: path.join(logDirectory, 'access-%DATE%.log'),
   verbose: false,
@@ -20,20 +23,21 @@ let accesslog = rotatingLogStream.getStream({
   date_format: 'YYYY-MM-DD',
   size: '5M'
 })
-app.use(morgan('combined', {stream: accesslog})) 
+app.use(morgan('combined', { stream: accesslog }))
 
+// 解析post提交数据
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.use(cookieParser()) // 设置cookie中间件
+app.use(cookieParser())
 
 const { connection } = require('./src/server/database/mysql')
 const { redisClient } = require('./src/server/database/redis')
 
 //session存储在redis中
-const sessionStore = new redisStore({
-  client: redisClient
-})
+// const sessionStore = new redisStore({
+//   client: redisClient
+// })
 
 let randomStr = Math.random().toString(36).substr(2)
 app.use(session({
@@ -41,51 +45,64 @@ app.use(session({
   saveUninitialized: true, // session在使用过程中被修改
   cookie: {
     path: '/', // 默认配置 
-    maxAge: 30 * 60 * 1000, // 设置30分钟
+    maxAge: 60 * 60 * 1000, // 设置30分钟
     httpOnly: true, // 默认配置
   },
   resave: true, // 允许重新设置session
-  store: sessionStore
+  // store: sessionStore
 }))
 
-
+// 统一设置响应头解决跨域
+app.all('*', function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Headers', 'authorization')
+  next()
+})
 
 
 //用户登录
 app.post('/api/login', function (req, res, next) {
   let { username, password } = req.body
-  let userinfo = {
-    name: 'rongfa',
-    password: 666666
-  }
-  if (username == userinfo.name && password === '666666') {
-    // res.cookie('username', username, {maxAge: 24 * 60 * 60 * 1000, httpOnly: true})
-    req.session.username = { username, password: 666666 }
-    return res.json({
+  let sql = `select * from user where username = "${username}" and password = "${password}" `
+  connection.query(sql, (error, result) => {
+    if (error) {
+      res.send(error)
+      return false
+    }
+    let token = jwt.sign({ username }, secretkey, { expiresIn: 60 * 60 * 24 })
+    res.json({
       code: 200,
-      msg: '登录成功'
+      message: '登录成功啦！',
+      data: {
+        token,
+        data: result
+      }
     })
-  } else {
-    return res.json({
-      code: -1,
-      msg: '用户名或密码错误'
-    })
-  }
+  })
 })
 
 // 获取用户登录信息
 app.post('/api/userinfo', function (req, res, next) {
-  if (req.session.username !== null) {
-    req.username = req.session.username
-  }
-  return res.json({
-    code: 200,
-    data: req.username
+  let isToken = req.headers.authorization
+  jwt.verify(isToken, secretkey, (error, result) => {
+    if (error) {
+      res.json({
+        meassge: '当前用户未登录'
+      })
+    } else {
+      res.json({
+        data: {
+          isToken: jwt.sign({ username: result.username }, secretkey, {expiresIn: 60 * 60 * 24}),
+          username: result.username
+        }
+      })
+    }
   })
 })
+
 // 退出登录
 app.get('/api/logout', function (req, res, next) {
-  req.session.username = null
+
 })
 
 // 获取博客列表

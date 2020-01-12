@@ -24,7 +24,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { getuser, userinfo } from "../../request/api.js";
+import { getuser } from "../../request/api.js";
 export default {
   data: () => ({
     ruleForm: {
@@ -56,9 +56,10 @@ export default {
             username: this.ruleForm.name,
             password: this.ruleForm.pass
           }).then(res => {
+            window.localStorage.setItem('token', res.data.token)
             setTimeout(function() {
               that.$router.push("home")
-            }, 1000)
+            }, 800)
           })
         } else {
           return false

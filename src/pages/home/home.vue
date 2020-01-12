@@ -129,7 +129,7 @@
 
 <script type="text/ecmascript-6">
 import { gethomelist, removeitem, searchlist, addarticle, userinfo, pagelist } from '../../request/api.js'
-
+import { mapGetters } from 'vuex'
 export default {
   data: () => ({
     circleUrl: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",

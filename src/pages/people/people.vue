@@ -9,7 +9,7 @@
       <div class="user-infos" @click="handleShow()">
         <el-avatar :src="circleUrl"></el-avatar>
         <span>
-          {{isUser}}
+          {{userinfo}}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <ul class="menus" v-show="ishidden">
@@ -27,7 +27,7 @@
       <div class="slider-menus">
         <ul>
           <li>
-            <router-link to>
+            <router-link to="/people">
               <i class="el-icon-s-custom"></i>
               <span v-if="show">个人简介</span>
             </router-link>
@@ -39,7 +39,7 @@
             </router-link>
           </li>
           <li>
-            <router-link to>
+            <router-link to="/wonder">
               <i class="el-icon-picture"></i>
               <span v-if="show">精彩生活</span>
             </router-link>
@@ -62,6 +62,7 @@
         <div class="planes">
           <img src="" alt="">
           <ul>
+            <li><img src="../../assets/images/guard.gif" alt="" srcset="" class="img-responsive"></li>
             <li>姓名：牧羊少年</li>
             <li>籍贯：中国-河南</li>
             <li>电话：130****4310</li>
@@ -77,6 +78,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import { mapState } from 'vuex'
 export default {
   data: () => ({
     show: true,
@@ -87,16 +89,14 @@ export default {
   mounted() {},
   components: {},
   computed: {
-    isUser() {
-      return this.$store.state.userinfo
-    }
+    ...mapState(['userinfo'])
   },
   methods: {
     handleShow() {
-
+      this.ishidden = !this.ishidden
     },
     handleQuit() {
-
+      this.$router.push('handleQuit')
     }
   }
 };
@@ -212,4 +212,8 @@ export default {
       margin-bottom 20px
       color #545555
       line-height 28px
+.img-responsive
+  height 120px
+  width 120px
+  display block
 </style>
