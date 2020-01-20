@@ -3,7 +3,7 @@ import { get, post } from '../request/http.js'
 // 登录
 export const getuser = params => post('api/login', params)
 // 获取用户登录信息
-export const userinfo = params => post('api/userinfo', params)
+export const userinfo = params => get('api/userinfo', params)
 // 获取博客列表
 export const gethomelist = params => get('api/searchlist', params)
 // 删除文章
@@ -18,3 +18,5 @@ export const addarticle = params => post('api/addarticle', params)
 export const getblogdetail = params => post('api/blogdetail',params)
 // 分页列表
 export const pagelist = params => post('api/pagelist', params)
+// 图片上传
+export const uploadImg = params => post('api/upload', params)

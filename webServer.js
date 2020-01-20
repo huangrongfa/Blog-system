@@ -9,9 +9,15 @@ const redisStore = require('connect-redis')(session)
 const rotatingLogStream = require('file-stream-rotator')
 const morgan = require('morgan')
 const jwt = require('jsonwebtoken')
+const multer = require('multer')
+const cors = require('cors')
 
-// 
+
+// token密钥
 let secretkey = 'vrn5ifmbfsq'
+
+// 设置允许跨域
+app.use(cors())
 
 // 写入日志文件到本地
 let logDirectory = path.join(__dirname, './src/server/logs')
@@ -21,7 +27,7 @@ let accesslog = rotatingLogStream.getStream({
   verbose: false,
   frequency: 'daily',
   date_format: 'YYYY-MM-DD',
-  size: '5M'
+  size: '2M'
 })
 app.use(morgan('combined', { stream: accesslog }))
 
@@ -39,6 +45,11 @@ const { redisClient } = require('./src/server/database/redis')
 //   client: redisClient
 // })
 
+
+const upload = multer({dest: "./src/server/public"})
+const singleMidle = upload.single("imgurl")
+
+
 let randomStr = Math.random().toString(36).substr(2)
 app.use(session({
   secret: randomStr, // 生成随机字符串
@@ -53,11 +64,11 @@ app.use(session({
 }))
 
 // 统一设置响应头解决跨域
-app.all('*', function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Headers', 'authorization')
-  next()
-})
+// app.all('*', function (req, res, next) {
+//   res.header('Access-Control-Allow-Origin', '*')
+//   res.header('Access-Control-Allow-Headers', 'authorization')
+//   next()
+// })
 
 
 //用户登录
@@ -82,9 +93,10 @@ app.post('/api/login', function (req, res, next) {
 })
 
 // 获取用户登录信息
-app.post('/api/userinfo', function (req, res, next) {
-  let isToken = req.headers.authorization
-  jwt.verify(isToken, secretkey, (error, result) => {
+app.get('/api/userinfo', function (req, res, next) {
+  // 验证token
+  let authToken = req.headers.authorization
+  jwt.verify(authToken, secretkey, (error, result) => {
     if (error) {
       res.json({
         meassge: '当前用户未登录'
@@ -92,7 +104,7 @@ app.post('/api/userinfo', function (req, res, next) {
     } else {
       res.json({
         data: {
-          isToken: jwt.sign({ username: result.username }, secretkey, {expiresIn: 60 * 60 * 24}),
+          authToken: jwt.sign({ username: result.username }, secretkey, {expiresIn: 60 * 60 * 24}),
           username: result.username
         }
       })
@@ -102,7 +114,10 @@ app.post('/api/userinfo', function (req, res, next) {
 
 // 退出登录
 app.get('/api/logout', function (req, res, next) {
-
+  res.json({
+    code: 200,
+    message: `退出成功`
+  })
 })
 
 // 获取博客列表
@@ -160,6 +175,7 @@ app.post('/api/articlelist', function (req, res, next) {
     })
   })
 })
+
 // 创建博客
 app.post('/api/addarticle', function (req, res, next) {
   let blogList = req.body
@@ -195,7 +211,7 @@ app.post('/api/editarticle', function (req, res, next) {
   })
 })
 // 获取博客文章详情
-app.post('/api/blogdetail', function (req, res, next) {
+app.post(`/api/blogdetail`, function (req, res, next) {
   let id = req.body.id
   let sql = `SELECT * FROM blogList where id = ${id}`
   connection.query(sql, (error, result) => {
@@ -215,7 +231,7 @@ app.post('/api/blogdetail', function (req, res, next) {
 app.post('/api/pagelist', function (req, res, next) {
   let currentPage = req.body.currentPage // 当前页数
   let start = (currentPage - 1) * 6
-  let sql = `select * from blogList limit ${start}, 6 `
+  let sql = `select * from blogList limit ${start}, 6`
   connection.query(sql, (error, result) => {
     if (error) {
       return res.json({
@@ -226,10 +242,22 @@ app.post('/api/pagelist', function (req, res, next) {
     return res.json({
       msg: '成功',
       code: 200,
-      data: result
+      data: result,
+      totalPage: 18
     })
   })
 })
+
+// 图片上传
+app.post('/api/upload', singleMidle, function(req, res, next){
+  console.log(req.file)
+  let _imgurl = req.file.originalname
+  res.json({
+    code: 200,
+    imgUrl: `http://localhost:9000/uploads/${_imgurl}`
+  })
+})
+
 
 app.listen(9000, () => {
   console.log('Server is running at http://localhost:9000')

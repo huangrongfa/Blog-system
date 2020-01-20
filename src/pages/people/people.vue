@@ -89,7 +89,9 @@ export default {
   mounted() {},
   components: {},
   computed: {
-    ...mapState(['userinfo'])
+    userinfo() {
+      return window.localStorage.getItem('userinfo')
+    }
   },
   methods: {
     handleShow() {

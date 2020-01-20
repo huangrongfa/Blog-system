@@ -90,7 +90,7 @@
             background
             layout="total, prev, pager, next"
             :page-size="6"
-            :total="18"
+            :total="this.total"
             @current-change="handleCurrentChange"
             v-if="tableData.length">
           </el-pagination>
@@ -150,6 +150,7 @@ export default {
     loading: true, // 是否显示loading
     onbtn: true, // 控制导航菜单切换
     show: true,
+    total: '',
     dialogTableVisible: false, // 是否显示弹窗
   }),
   created() {
@@ -168,6 +169,7 @@ export default {
       this.loading = true
       pagelist({currentPage: 1}).then(res => {
         this.tableData = [...res.data]
+        this.total = res.totalPage
         setTimeout(() => {
           this.loading = false
         }, 500)
@@ -209,6 +211,7 @@ export default {
       this.dialogTableVisible = true
     },
     handleSubmit() {
+      if (!this.dialogform.title || !dialogform.id) return false
       addarticle({
         id: this.dialogform.id,
         title: this.dialogform.title,
@@ -232,7 +235,6 @@ export default {
     },
     handleQuit() {
       this.ishidden = false
-
       this.$router.push('/')
     },
     slider() {

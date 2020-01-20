@@ -8,10 +8,11 @@
       </a>
       <div class="user-infos" @click="handleShow()">
         <el-avatar :src="circleUrl"></el-avatar>
-        <span>
-          {{isuers}}
+        <span class="users">
+          {{user}}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
+        <!--  -->
         <ul class="menus" v-show="ishidden">
           <li>
             <a href="javascript:;">个人中心</a>
@@ -71,8 +72,8 @@
           <el-input type="textarea" v-model="form.content" rows="5"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="goblack()" size="small">返回</el-button>
-          <el-button type="primary" @click="onSubmit()" size="small">保存</el-button>
+          <el-button type="primary" @click="goblack()" size="medium">返回</el-button>
+          <el-button type="primary" @click="onSubmit()" size="medium">保存</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -81,7 +82,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { getblogdetail, editblog } from "../../request/api.js";
+import { getblogdetail, editblog } from "../../request/api.js"
+import { mapState } from 'vuex'
 export default {
   data: () => ({
     form: {
@@ -100,14 +102,17 @@ export default {
   },
   mounted() {},
   computed: {
-    isuers() {
-      return this.$store.state.userinfo
+    user() {
+      return window.localStorage.getItem('userinfo')
     }
   },
   components: {},
   methods: {
     goblack() {
       this.$router.push("home");
+    },
+    handleShow() {
+      this.ishidden = !this.ishidden
     },
     getdetailsdata() {
       getblogdetail({
@@ -145,16 +150,16 @@ export default {
   margin-left: 190px;
   border-bottom: 1px solid #dcdfe6;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
-
+  .users{
+    color: #909399
+  }
   .user-infos, .el-avatar--circle {
     vertical-align: middle;
     margin-right: 10px;
   }
-
   .anthour {
     font-size: 18px;
     color: #909399;
-
     .icon-anthour {
       margin-right: 5px;
     }

@@ -1,5 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
+
+// NProgress配置
+NProgress.inc(0.2)
+NProgress.configure({ easing: 'ease', speed: 600, showSpinner: false })
+
 Vue.use(Router)
 
 const login = resolve => require.ensure([], () => resolve(require('./components/login/login.vue')))
@@ -7,9 +15,6 @@ const home = resolve => require.ensure([], () => resolve(require('./pages/home/h
 const homedetail = resolve => require.ensure([], () => resolve(require('./pages/homedetail/homedetail.vue')))
 const people = resolve => require.ensure([], () => resolve(require('./pages/people/people.vue')))
 const wonder = resolve => require.ensure([], () => resolve(require('./pages/wonderful/wonderPage.vue')))
-
-
-
 
 const router = new Router({
   routes: [
@@ -34,7 +39,7 @@ const router = new Router({
       }
     },
     {
-      path: '/homedetail',
+      path: '/homedetail/',
       name: 'homedetail',
       component: homedetail,
       meta: {
@@ -61,3 +66,13 @@ const router = new Router({
 })
 
 export default router
+
+
+router.beforeEach((to, from, next) => {
+  NProgress.start()
+  next()
+})
+
+router.afterEach((to, from, next) => {
+  NProgress.done()
+})

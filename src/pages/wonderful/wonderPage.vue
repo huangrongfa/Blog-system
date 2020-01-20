@@ -59,6 +59,20 @@
         </ul>
       </div>
       <div class="pelple-body">
+      <div class="upload-content">
+        <el-upload
+        class="upload-demo"
+        drag
+        action="http://localhost:8080/api/upload"
+        multiple
+        name="imgurl"
+        :on-success="handleAvatarSuccess"
+        :before-upload="beforeAvatarUpload">
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+      </el-upload>
+      </div>
         <div class="wonder-planes">
           <ul>
             <li v-for="items in imgdata" :key="items.id">
@@ -73,6 +87,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import { uploadImg } from '../../request/api.js'
 export default {
   data: () => ({
     show: true,
@@ -94,39 +109,48 @@ export default {
       {
         url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
         id: '004'
-      },
-            {
-        url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        id: '005'
-      },
-            {
-        url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        id: '006'
-      },
-            {
-        url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        id: '007'
-      },
-            {
-        url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        id: '008'
-      },
-    ]
+      }],
+      limitNum: 2, // 允许上传图片最大数
   }),
   created() {},
-  mounted() {},
-  components: {},
+  mounted() {
+
+  },
+  components: {
+
+  },
   computed: {
     isUser() {
-      return this.$store.state.userinfo
+      return window.localStorage.getItem('userinfo')
     }
   },
   methods: {
+    // 图片上传之前
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isPNG = file.type === 'image/png'
+      if (!isJPG && !isPNG) {
+        this.$message({
+          title: '警告',
+          message: `上传头像图片只能是JPG和PNG的格式`
+        })
+      }
+      const fileSize = file.size / 1024 / 1024 / 2
+      if (fileSize > 2) {
+        this.$message({
+          title: '警告',
+          message: `图片大小必须小于2M，请重新上传`
+        })
+      }
+    },
+    handleAvatarSuccess(res, file) {
+      alert('上传成功')
+    },
     handleShow() {
 
     },
     handleQuit() {
-
+      this.$router.push('/')
     }
   }
 };
@@ -247,4 +271,8 @@ export default {
         width 100%
         max-width 100%
         display block
+  .upload-content
+    max-width 360px
+    width 360px
+    margin-bottom 20px
 </style>
