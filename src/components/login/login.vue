@@ -50,18 +50,18 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          // this.isloading = true
-          // let that = this
-          // getuser({
-          //   username: this.ruleForm.name,
-          //   password: this.ruleForm.pass
-          // }).then(res => {
-          //   window.localStorage.setItem('token', res.data.token)
-          //   setTimeout(function() {
-          //     that.$router.push("home")
-          //   }, 800)
-          // })
-          this.$router.push("home")
+          this.isloading = true
+          let that = this
+          getuser({
+            username: this.ruleForm.name,
+            password: this.ruleForm.pass
+          }).then(res => {
+            window.localStorage.setItem('token', res.data.token)
+            setTimeout(function() {
+              that.$router.push("home")
+            }, 800)
+          })
+          that.$router.push("home")
         } else {
           return false
         }

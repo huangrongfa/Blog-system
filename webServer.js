@@ -10,10 +10,6 @@ const rotatingLogStream = require('file-stream-rotator')
 const morgan = require('morgan')
 const cors = require('cors')
 
-// 导入路由文件
-const router = require('./src/server/router/router')
-app.use(router)
-
 // 设置允许跨域
 app.use(cors())
 
@@ -36,7 +32,12 @@ app.use(bodyParser.json())
 app.use(cookieParser())
 
 
-const { redisClient } = require('./src/server/database/redis')
+// 导入路由文件
+const routes = require('./src/server/routes/index')
+app.use('/', routes)
+
+
+// const { redisClient } = require('./src/server/database/redis')
 
 //session存储在redis中
 // const sessionStore = new redisStore({
@@ -55,6 +56,9 @@ app.use(session({
   resave: true, // 允许重新设置session
   // store: sessionStore
 }))
+
+
+
 
 app.listen(9000, () => {
   console.log('Server is running at http://localhost:9000')

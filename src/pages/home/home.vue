@@ -152,6 +152,7 @@ export default {
     show: true,
     total: '',
     dialogTableVisible: false, // 是否显示弹窗
+    currentPage: 1
   }),
   created() {
     this.handlelist()
@@ -167,7 +168,7 @@ export default {
   methods: {
     handlelist() {
       this.loading = true
-      pagelist({currentPage: 1}).then(res => {
+      pagelist({currentPage: this.currentPage}).then(res => {
         this.tableData = [...res.data]
         this.total = res.totalPage
         setTimeout(() => {

@@ -3,20 +3,19 @@ const express = require("express")
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 const multer = require('multer')
+const {connection} = require('../database/mysql')
+
+// token密钥
+let secretkey = 'vrn5ifmbfsq'
 
 // 处理图片上传
 const upload = multer({dest: "./src/server/public"})
 const singleMidle = upload.single("imgurl")
-const { connection } = require('../database/mysql')
-
-// token密钥
-let secretkey = 'vrn5ifmbfsq'
 
 //用户登录
 router.post('/api/login', function (req, res, next) {
   let password = req.body.password
   let username = req.body.username
-  console.log(password)
   let sql = `select * from user where username = "${username}" and password = "${password}" `
   connection.query(sql, (error, result) => {
     if (error) {
@@ -52,6 +51,25 @@ router.get('/api/userinfo', function (req, res, next) {
         }
       })
     }
+  })
+});
+router.post('/api/pagelist', function (req, res, next) {
+  let currentPage = req.body.currentPage // 当前页数
+  let start = (currentPage - 1) * 6
+  let sql = `select * from blogList limit ${start}, 6`
+  connection.query(sql, (error, result) => {
+    if (error) {
+      return res.json({
+        code: -1,
+        meassge: '失败'
+      })
+    }
+    return res.json({
+      msg: '成功',
+      code: 200,
+      data: result,
+      totalPage: 18
+    })
   })
 });
 // 获取文章列表
@@ -98,10 +116,10 @@ router.get('/api/logout', function (req, res, next) {
     message: `退出成功`
   })
 })
-
 // 查询博客文章
 router.post('/api/articlelist', function (req, res, next) {
   let id = req.body.id
+  console.log('===============', id )
   let sql = `SELECT * FROM blogList where id = ${id}`
   connection.query(sql, (error, result) => {
     if (error) {
@@ -117,6 +135,7 @@ router.post('/api/articlelist', function (req, res, next) {
     })
   })
 });
+
 
 // 创建博客
 router.post('/api/addarticle', function (req, res, next) {
@@ -166,26 +185,6 @@ router.post(`/api/blogdetail`, function (req, res, next) {
     res.json({
       code: 200,
       data: result
-    })
-  })
-});
-// 分页接口
-router.post('/api/pagelist', function (req, res, next) {
-  let currentPage = req.body.currentPage // 当前页数
-  let start = (currentPage - 1) * 6
-  let sql = `select * from blogList limit ${start}, 6`
-  connection.query(sql, (error, result) => {
-    if (error) {
-      return res.json({
-        code: -1,
-        meassge: '失败'
-      })
-    }
-    return res.json({
-      msg: '成功',
-      code: 200,
-      data: result,
-      totalPage: 18
     })
   })
 });
