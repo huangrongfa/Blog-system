@@ -1,15 +1,14 @@
-
 const express = require("express")
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 const multer = require('multer')
-const {connection} = require('../database/mysql')
+const { connection } = require('../database/mysql')
 
 // token密钥
 let secretkey = 'vrn5ifmbfsq'
 
 // 处理图片上传
-const upload = multer({dest: "./src/server/public"})
+const upload = multer({ dest: "./src/server/public" })
 const singleMidle = upload.single("imgurl")
 
 //用户登录
@@ -46,7 +45,7 @@ router.get('/api/userinfo', function (req, res, next) {
     } else {
       res.json({
         data: {
-          authToken: jwt.sign({ username: result.username }, secretkey, {expiresIn: 60 * 60 * 24}),
+          authToken: jwt.sign({ username: result.username }, secretkey, { expiresIn: 60 * 60 * 24 }),
           username: result.username
         }
       })
@@ -79,7 +78,7 @@ router.post('/api/pagelist', function (req, res, next) {
   })
 });
 // 获取文章列表
-router.get('/api/searchlist', function(req, res, next){
+router.get('/api/searchlist', function (req, res, next) {
   let sql = `select * from blogList`
   connection.query(sql, (error, result) => {
     if (error) {
@@ -100,7 +99,7 @@ router.get('/api/searchlist', function(req, res, next){
 // 删除博客
 router.post('/api/removelist', function (req, res, next) {
   let id = req.body.id
-  let sql = `DELETE FROM blogList where id = ${id}`
+  let sql = `delete from blogList where id = ${id}`
   connection.query(sql, (error, result) => {
     if (result.affectedRows > 0) {
       return res.json({
@@ -125,8 +124,7 @@ router.get('/api/logout', function (req, res, next) {
 // 查询博客文章
 router.post('/api/articlelist', function (req, res, next) {
   let id = req.body.id
-  // console.log('===============', id )
-  let sql = `SELECT * FROM blogList where id = ${id}`
+  let sql = `select * from blogList where id = ${id}`
   connection.query(sql, (error, result) => {
     if (error) {
       return res.json({
@@ -146,7 +144,7 @@ router.post('/api/articlelist', function (req, res, next) {
 // 创建博客
 router.post('/api/addarticle', function (req, res, next) {
   let blogList = req.body
-  let sql = `INSERT INTO blogList SET ?`
+  let sql = `insert into blogList SET ?`
   connection.query(sql, blogList, (error, result) => {
     if (error) {
       return res.json({
@@ -162,7 +160,7 @@ router.post('/api/addarticle', function (req, res, next) {
 });
 // 编辑博客
 router.post('/api/editarticle', function (req, res, next) {
-  let sql = `UPDATE blogList SET title = ?,content = ? WHERE id = ${req.body.id}`
+  let sql = `update blogList set title = ?,content = ? where id = ${req.body.id}`
   let resultdata = [req.body.title, req.body.content]
   connection.query(sql, resultdata, (error, result) => {
     if (error) {
@@ -180,7 +178,7 @@ router.post('/api/editarticle', function (req, res, next) {
 // 获取博客文章详情
 router.post(`/api/blogdetail`, function (req, res, next) {
   let id = req.body.id
-  let sql = `SELECT * FROM blogList where id = ${id}`
+  let sql = `select * from blogList where id = ${id}`
   connection.query(sql, (error, result) => {
     if (error) {
       return res.json({
@@ -196,7 +194,7 @@ router.post(`/api/blogdetail`, function (req, res, next) {
 });
 
 // 图片上传
-router.post('/api/upload', singleMidle, function(req, res, next){
+router.post('/api/upload', singleMidle, function (req, res, next) {
   console.log(req.file)
   let _imgurl = req.file.originalname
   res.json({

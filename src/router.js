@@ -6,7 +6,7 @@ import 'nprogress/nprogress.css'
 
 // NProgress配置
 NProgress.inc(0.2)
-NProgress.configure({ easing: 'ease', speed: 600, showSpinner: false })
+NProgress.configure({ easing: 'ease', speed: 500, showSpinner: false })
 
 Vue.use(Router)
 
@@ -67,7 +67,7 @@ const router = new Router({
 
 export default router
 
-
+// 全局全局前置守卫
 router.beforeEach((to, from, next) => {
   NProgress.start()
   next()
