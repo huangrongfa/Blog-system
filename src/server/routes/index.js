@@ -53,23 +53,29 @@ router.get('/api/userinfo', function (req, res, next) {
     }
   })
 });
+// 分页接口
 router.post('/api/pagelist', function (req, res, next) {
-  let currentPage = req.body.currentPage // 当前页数
-  let start = (currentPage - 1) * 6
-  let sql = `select * from blogList limit ${start}, 6`
+  let currentPage = parseInt(req.body.currentPage) // 当前页数
+  let start = (currentPage - 1) * 6 // 每页返回几条数据
+  let sql = `select count(*) from blogList;select * from blogList limit 6 offset ${start}`
   connection.query(sql, (error, result) => {
+    // connection.release()
     if (error) {
+      return false
+    } else {
+      let all = result[0][0]['count(*)']
+      let allPage = Math.ceil(parseInt(all) / 6)
+      let pageStr = allPage.toString()
+      if (pageStr.indexOf('.') > 0) {
+        allPage = parseInt(pageStr.split('.')[0]) + 1
+      }
+      let dataList = result[1]
       return res.json({
-        code: -1,
-        meassge: '失败'
+        code: 200,
+        data: dataList,
+        totalPage: allPage
       })
     }
-    return res.json({
-      msg: '成功',
-      code: 200,
-      data: result,
-      totalPage: 18
-    })
   })
 });
 // 获取文章列表
@@ -119,7 +125,7 @@ router.get('/api/logout', function (req, res, next) {
 // 查询博客文章
 router.post('/api/articlelist', function (req, res, next) {
   let id = req.body.id
-  console.log('===============', id )
+  // console.log('===============', id )
   let sql = `SELECT * FROM blogList where id = ${id}`
   connection.query(sql, (error, result) => {
     if (error) {

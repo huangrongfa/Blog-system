@@ -90,7 +90,7 @@
             background
             layout="total, prev, pager, next"
             :page-size="6"
-            :total="this.total"
+            :total="totalpages"
             @current-change="handleCurrentChange"
             v-if="tableData.length">
           </el-pagination>
@@ -162,6 +162,9 @@ export default {
   computed: {
     isUser() {
       return this.$store.state.userinfo || ''
+    },
+    totalpages() {
+      return parseInt(this.allPage * 6 )
     }
   },
   components: {},
@@ -170,7 +173,8 @@ export default {
       this.loading = true
       pagelist({currentPage: this.currentPage}).then(res => {
         this.tableData = [...res.data]
-        this.total = res.totalPage
+        this.allPage = res.totalPage
+        console.log(this.allPage)
         setTimeout(() => {
           this.loading = false
         }, 500)
@@ -212,7 +216,7 @@ export default {
       this.dialogTableVisible = true
     },
     handleSubmit() {
-      if (!this.dialogform.title || !dialogform.id) return false
+      if (!this.dialogform.title || !this.dialogform.id) return false
       addarticle({
         id: this.dialogform.id,
         title: this.dialogform.title,
@@ -237,6 +241,7 @@ export default {
     handleQuit() {
       this.ishidden = false
       this.$router.push('/')
+      window.localStorage.removeItem('token')
     },
     slider() {
       if (this.onbtn) {
