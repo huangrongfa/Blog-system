@@ -1,63 +1,7 @@
 <!--  -->
 <template>
   <div class="jumbtion">
-    <!-- 头部 -->
-    <el-header class="plane-head">
-      <a href="javascript:;" class="anthour">
-        <i class="el-icon-s-fold icon-anthour"></i>牧羊少年后台管理系统
-      </a>
-      <div class="user-infos" @click="handleShow()">
-        <el-avatar :src="circleUrl"></el-avatar>
-        <span class="users">
-          {{user}}
-          <i class="el-icon-arrow-down el-icon--right"></i>
-        </span>
-        <!--  -->
-        <ul class="menus" v-show="ishidden">
-          <li>
-            <a href="javascript:;">个人中心</a>
-          </li>
-          <li>
-            <a href="javascript:;" @click="handleQuit()">退出</a>
-          </li>
-        </ul>
-      </div>
-    </el-header>
     <div class="main">
-      <div class="slider-menus">
-        <ul>
-          <li>
-            <router-link to>
-              <i class="el-icon-s-custom"></i>
-              <span v-if="show">个人简介</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link to="home">
-              <i class="el-icon-s-order"></i>
-              <span v-if="show">博客列表</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link to>
-              <i class="el-icon-picture"></i>
-              <span v-if="show">精彩生活</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link to>
-              <i class="el-icon-medal"></i>
-              <span v-if="show">猜你喜欢</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link to>
-              <i class="el-icon-notebook-2"></i>
-              <span v-if="show">我的留言</span>
-            </router-link>
-          </li>
-        </ul>
-      </div>
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="文章ID">
           <el-input v-model="form.id" disabled></el-input>
@@ -181,26 +125,4 @@ export default {
   bottom: 0;
   width: 100%;
 }
-.slider-menus
-    width 190px
-    position fixed
-    top 0
-    bottom 0
-    left 0
-    background #324157
-    margin-right 15px
-    transition .2s ease-out
-    a
-      display block
-      height 44px
-      line-height 44px
-      font-size 14px
-      padding-left 15px
-      color #bfcbd9
-      i
-        margin-right 5px
-        font-size 16px
-      &:hover
-        background #223041!important
-        color #20a0ff
 </style>

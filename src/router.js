@@ -15,13 +15,12 @@ const home = resolve => require.ensure([], () => resolve(require('./pages/home/h
 const homedetail = resolve => require.ensure([], () => resolve(require('./pages/homedetail/homedetail.vue')))
 const people = resolve => require.ensure([], () => resolve(require('./pages/people/people.vue')))
 const wonder = resolve => require.ensure([], () => resolve(require('./pages/wonderful/wonderPage.vue')))
+const messagePage = resolve => require.ensure([], () => resolve(require('./pages/lmessage/messagePage.vue')))
+
 
 const router = new Router({
+  mode: 'history',
   routes: [
-    {
-      path: '*',
-      redirect: '/'
-    },
     {
       path: '/',
       name: 'login',
@@ -60,6 +59,14 @@ const router = new Router({
       component: wonder,
       meta: {
         title: '精彩生活'
+      }
+    },
+    {
+      path: '/messagePage',
+      name: 'messagePage',
+      component: messagePage,
+      meta: {
+        title: '留言本'
       }
     }
   ],

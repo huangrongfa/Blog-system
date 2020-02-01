@@ -59,9 +59,8 @@ export default {
             window.localStorage.setItem('token', res.data.token)
             setTimeout(function() {
               that.$router.push("home")
-            }, 800)
+            }, 600)
           })
-          that.$router.push("home")
         } else {
           return false
         }
@@ -72,10 +71,14 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .content-block {
-  height: 100vh;
-  width: 100vw;
-  background: url('../../assets/images/small.jpeg') no-repeat center center;
-  background-size: cover;
+  background: url('../../assets/images/small.jpeg') no-repeat center center
+  background-size: cover
+  position fixed
+  top 0
+  right 0
+  bottom 0
+  left 0
+  z-index 99
 }
 .demo-ruleForm {
   max-width: 380px;

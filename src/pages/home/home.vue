@@ -2,63 +2,8 @@
 <template>
   <div class="plane">
     <el-container>
-      <!-- 头部 -->
-      <el-header class="plane-head">
-        <a href="javascript:;" class="anthour" @click="slider()">
-          <i class="el-icon-s-fold icon-anthour"></i>牧羊少年后台管理系统
-        </a>
-        <div class="user-infos" @click="handleShow()">
-          <el-avatar :src="circleUrl"></el-avatar>
-          <span>
-            {{isUser}}
-            <i class="el-icon-arrow-down el-icon--right"></i>
-          </span>
-          <ul class="menus" v-show="ishidden">
-            <li>
-              <a href="javascript:;">个人中心</a>
-            </li>
-            <li>
-              <a href="javascript:;" @click="handleQuit()">退出</a>
-            </li>
-          </ul>
-        </div>
-      </el-header>
       <!-- 主要内容 -->
       <el-main class="plane-body">
-        <div class="plane-body-left">
-          <ul>
-            <li>
-              <router-link to="people" exact>
-                <i class="el-icon-s-custom"></i>
-                <span v-if="show">个人简介</span>
-              </router-link>
-            </li>
-            <li>
-              <router-link to="home">
-                <i class="el-icon-s-order"></i>
-                <span v-if="show">博客列表</span>
-              </router-link>
-            </li>
-            <li>
-              <router-link to="wonder">
-                <i class="el-icon-picture"></i>
-                <span v-if="show">精彩生活</span>
-              </router-link>
-            </li>
-            <li>
-              <router-link to>
-                <i class="el-icon-medal"></i>
-                <span v-if="show">猜你喜欢</span>
-              </router-link>
-            </li>
-            <li>
-              <router-link to>
-                <i class="el-icon-notebook-2"></i>
-                <span v-if="show">我的留言</span>
-              </router-link>
-            </li>
-          </ul>
-        </div>
         <div class="plane-body-right">
           <el-form :inline="true" :model="formInline" class="demo-form-inline">
             <el-form-item label="博客ID" size="medium">
@@ -159,14 +104,11 @@ import {
   removeitem,
   searchlist,
   addarticle,
-  userinfo,
   pagelist
 } from "../../request/api.js";
 import { mapGetters } from "vuex";
 export default {
   data: () => ({
-    circleUrl:
-      "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
     tableData: [],
     formInline: {
       title: "",
@@ -182,7 +124,6 @@ export default {
     },
     ishidden: false, //是否显示下啦菜单
     loading: true, // 是否显示loading
-    onbtn: true, // 控制导航菜单切换
     show: true,
     total: "",
     dialogTableVisible: false, // 是否显示弹窗
@@ -190,26 +131,29 @@ export default {
   }),
   created() {
     this.handlelist();
-    this.getuserinfo();
+  },
+  watch: {
+    '$route': 'routeChange'
   },
   mounted() {},
   computed: {
-    isUser() {
-      return this.$store.state.userinfo || "";
-    },
     totalpages() {
       return parseInt(this.allPage * 6);
     }
   },
   components: {},
   methods: {
+    routeChange(to, from) {
+      console.log(to.path)
+      console.log(from.path)
+      console.log(this.$route.path)
+    },
     handlelist() {
       this.loading = true;
       pagelist({ currentPage: this.currentPage })
         .then(res => {
           this.tableData = [...res.data];
           this.allPage = res.totalPage;
-          console.log(this.allPage);
           setTimeout(() => {
             this.loading = false;
           }, 500);
@@ -271,47 +215,11 @@ export default {
         }
       });
     },
-    handleShow() {
-      this.ishidden = !this.ishidden;
-    },
-    handleQuit() {
-      this.ishidden = false;
-      this.$router.push("/");
-      window.localStorage.removeItem("token");
-    },
-    slider() {
-      if (this.onbtn) {
-        let el = document.querySelector(".plane-head");
-        let els = document.querySelector(".plane-body-right");
-        let elment = document.querySelector(".plane-body-left");
-        el.style.marginLeft = 42 + "px";
-        els.style.marginLeft = 60 + "px";
-        elment.style.width = 50 + "px";
-        this.onbtn = false;
-        this.show = false;
-      } else {
-        let el = document.querySelector(".plane-head");
-        let els = document.querySelector(".plane-body-right");
-        let elment = document.querySelector(".plane-body-left");
-        el.style.marginLeft = "";
-        els.style.marginLeft = "";
-        elment.style.width = "";
-        this.onbtn = true;
-        setTimeout(() => {
-          this.show = true;
-        }, 60);
-      }
-    },
     handleCurrentChange(val) {
       pagelist({
         currentPage: val
       }).then(res => {
         this.tableData = [...res.data];
-      });
-    },
-    getuserinfo() {
-      userinfo().then(res => {
-        this.$store.dispatch("saveInfo", res.data.username);
       });
     }
   },
@@ -341,129 +249,8 @@ export default {
   padding: 0 15px;
 }
 
-.plane-head {
-  background: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  font-size: 14px;
-  margin-left: 190px;
-  border-bottom: 1px solid #dcdfe6;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
-  transition: 0.2s ease-out;
-
-  .user-infos {
-    span {
-      color: #909399;
-    }
-  }
-
-  .el-avatar--circle {
-    vertical-align: middle;
-    margin-right: 10px;
-  }
-
-  .anthour {
-    font-size: 18px;
-    color: #909399;
-
-    .icon-anthour {
-      margin-right: 5px;
-    }
-  }
-
-  .menus {
-    height: 100px;
-    width: 120px;
-    position: absolute;
-    right: 15px;
-    top: 72px;
-    background-color: #fff;
-    border: 1px solid #ebeef5;
-    border-radius: 4px;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    z-index: 5;
-
-    li {
-      margin-top: 6px;
-    }
-
-    &::before {
-      position: absolute;
-      display: block;
-      width: 0;
-      height: 0;
-      border-color: transparent;
-      border-style: solid;
-      border-bottom-color: #ebeef5;
-      content: '';
-      top: -14px;
-      left: 55px;
-      border-width: 7px;
-    }
-
-    &::after {
-      position: absolute;
-      display: block;
-      width: 0;
-      height: 0;
-      border-color: transparent;
-      border-style: solid;
-      border-bottom-color: #fff;
-      content: '';
-      top: -12px;
-      left: 53px;
-      margin-left: 3px;
-      border-width: 6px;
-    }
-
-    a {
-      display: block;
-      height: 40px;
-      line-height: 40px;
-      text-align: center;
-
-      &:hover {
-        background-color: #ecf5ff;
-        color: #66b1ff;
-      }
-    }
-  }
-}
-
 .plane-body {
   padding: 0;
-
-  .plane-body-left {
-    width: 190px;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    background: #324157;
-    margin-right: 15px;
-    transition: 0.2s ease-out;
-
-    a {
-      display: block;
-      height: 44px;
-      line-height: 44px;
-      font-size: 14px;
-      padding-left: 15px;
-      color: #bfcbd9;
-
-      i {
-        margin-right: 5px;
-        font-size: 16px;
-      }
-
-      &:hover {
-        background: #223041 !important;
-        color: #20a0ff;
-      }
-    }
-  }
-
   .plane-body-right {
     overflow: hidden;
     height: 100%;
@@ -481,7 +268,6 @@ export default {
     }
   }
 }
-
 .plane-footer {
   text-align: center;
   color: #909399;
