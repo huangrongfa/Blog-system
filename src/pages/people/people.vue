@@ -16,7 +16,6 @@
         </div>
       </div>
     </el-main>
-    <el-footer class="plane-footer">牧羊少年科技有限责任公司©️版权所有</el-footer>
   </div>
 </template>
 
@@ -122,7 +121,7 @@ export default {
   bottom 0
   width 100%
 .pelple-body
-  margin-left 200px
+  margin-left 100px
   .planes
     max-width 520px
     margin 110px auto 

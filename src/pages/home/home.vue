@@ -4,7 +4,7 @@
     <el-container>
       <!-- 主要内容 -->
       <el-main class="plane-body">
-        <div class="plane-body-right">
+        <div class="">
           <el-form :inline="true" :model="formInline" class="demo-form-inline">
             <el-form-item label="博客ID" size="medium">
               <el-input v-model="formInline.id" placeholder="请输入博客ID"></el-input>
@@ -104,7 +104,8 @@ import {
   removeitem,
   searchlist,
   addarticle,
-  pagelist
+  pagelist,
+  userinfo
 } from "../../request/api.js";
 import { mapGetters } from "vuex";
 export default {
@@ -130,10 +131,7 @@ export default {
     currentPage: 1
   }),
   created() {
-    this.handlelist();
-  },
-  watch: {
-    '$route': 'routeChange'
+    this.handlelist()
   },
   mounted() {},
   computed: {
@@ -143,11 +141,6 @@ export default {
   },
   components: {},
   methods: {
-    routeChange(to, from) {
-      console.log(to.path)
-      console.log(from.path)
-      console.log(this.$route.path)
-    },
     handlelist() {
       this.loading = true;
       pagelist({ currentPage: this.currentPage })
@@ -251,22 +244,6 @@ export default {
 
 .plane-body {
   padding: 0;
-  .plane-body-right {
-    overflow: hidden;
-    height: 100%;
-    margin-top: 20px;
-    margin-left: 205px;
-    transition: 0.2s ease-out;
-
-    >>> .el-form--inline .el-form-item {
-      margin-right: 20px;
-    }
-
-    >>> .el-pagination {
-      text-align: center;
-      margin: 45px 0 0;
-    }
-  }
 }
 .plane-footer {
   text-align: center;

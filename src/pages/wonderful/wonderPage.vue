@@ -1,4 +1,3 @@
-<!--  -->
 <template>
   <div class="people-block">
     <el-main>
@@ -26,7 +25,6 @@
         </div>
       </div>
     </el-main>
-    <el-footer class="plane-footer">牧羊少年科技有限责任公司©️版权所有</el-footer>
   </div>
 </template>
 

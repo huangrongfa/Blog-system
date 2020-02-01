@@ -1,4 +1,3 @@
-<!--  -->
 <template>
   <div class="content-block">
     <el-form
@@ -70,7 +69,7 @@ export default {
 };
 </script>
 <style lang="stylus" scoped>
-.content-block {
+.warper .content-block {
   background: url('../../assets/images/small.jpeg') no-repeat center center
   background-size: cover
   position fixed
@@ -79,6 +78,8 @@ export default {
   bottom 0
   left 0
   z-index 99
+  margin-left 0
+  margin-top 0
 }
 .demo-ruleForm {
   max-width: 380px;

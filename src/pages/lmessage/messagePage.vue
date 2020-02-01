@@ -1,4 +1,3 @@
-<!--  -->
 <template>
   <div class="content-block">
     <div class="jumbtion">
@@ -8,8 +7,8 @@
         </el-form-item>
         <el-form-item label="留言类型">
           <el-select v-model="form.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+            <el-option label="国内" value="1"></el-option>
+            <el-option label="国际" value="2"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="留言时间">
@@ -32,8 +31,7 @@
           <el-input type="textarea" v-model="form.desc"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit()">提交</el-button>
-          <el-button>取消</el-button>
+          <el-button type="primary" @click="onSubmit()" size="small">提交留言</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -57,7 +55,17 @@ export default {
   components: {},
   methods: {
     onSubmit() {
-
+      if (!window.localStorage.getItem('token')) {
+        this.$alert('抱歉，您还没有登录', {
+          confirmButtonText: '确定',
+          callback: action => {
+            this.$message({
+              type: 'info'
+            });
+          }
+        });
+        return false
+      }
     }
   }
 };

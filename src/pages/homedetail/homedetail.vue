@@ -1,4 +1,3 @@
-<!--  -->
 <template>
   <div class="jumbtion">
     <div class="main">
@@ -21,7 +20,6 @@
         </el-form-item>
       </el-form>
     </div>
-    <el-footer class="plane-footer">牧羊少年科技有限责任公司©️版权所有</el-footer>
   </div>
 </template>
 

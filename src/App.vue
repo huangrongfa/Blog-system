@@ -7,10 +7,7 @@
       </a>
       <div class="user-infos" @click="handleShow()">
         <el-avatar icon="el-icon-user-solid"></el-avatar>
-        <span>
-          {{isUser}}
-          <i class="el-icon-arrow-down el-icon--right"></i>
-        </span>
+        <span>{{isUser}}<i class="el-icon-arrow-down el-icon--right"></i></span>
         <ul class="menus" v-show="ishidden">
           <li>
             <a href="javascript:;">个人中心</a>
@@ -21,7 +18,7 @@
         </ul>
       </div>
     </el-header>
-    <!-- 内容 -->
+    <!-- 主体内容 -->
     <el-main class="warper">
       <!-- 导航菜单 -->
       <div class="plane-body-left" v-show="hide">
@@ -58,9 +55,8 @@
           </li>
         </ul>
       </div>
-      <router-view v-wechat-title="$route.meta.title"></router-view>
+      <router-view class="plane-body-right" v-wechat-title="$route.meta.title"></router-view>
     </el-main>
-    <!-- 公共页脚 -->
   </div>
 </template>
 <script>
@@ -89,6 +85,11 @@ export default {
     this.getuserinfo()
   },
   methods: {
+    getuserinfo() {
+      userinfo().then(res => {
+        this.$store.dispatch("saveInfo", res.data.username)
+      });
+    },
     handleShow() {
       this.ishidden = !this.ishidden;
     },
@@ -96,11 +97,6 @@ export default {
       this.ishidden = false;
       this.$router.push("/");
       window.localStorage.removeItem("token");
-    },
-    getuserinfo() {
-      userinfo().then(res => {
-        this.$store.dispatch("saveInfo", res.data.username);
-      });
     },
     slider() {
       if (this.onbtn) {
@@ -159,6 +155,22 @@ export default {
         background: #223041 !important;
         color: #20a0ff;
       }
+    }
+  }
+  .plane-body-right {
+    overflow: hidden;
+    height: 100%;
+    margin-top: 20px;
+    margin-left: 205px;
+    transition: 0.2s ease-out;
+
+    >>> .el-form--inline .el-form-item {
+      margin-right: 20px;
+    }
+
+    >>> .el-pagination {
+      text-align: center;
+      margin: 45px 0 0;
     }
   }
 }
