@@ -44,6 +44,7 @@ app.use('/', routes)
 //   client: redisClient
 // })
 
+
 let randomStr = Math.random().toString(36).substr(2)
 app.use(session({
   secret: randomStr, // 生成随机字符串

@@ -20,3 +20,5 @@ export const getblogdetail = params => post('api/blogdetail',params)
 export const pagelist = params => post('api/pagelist', params)
 // 图片上传
 export const uploadImg = params => post('api/upload', params)
+// 留言
+export const adduserInfo = params => post('api/addinfo', params)

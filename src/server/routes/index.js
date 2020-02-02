@@ -144,7 +144,7 @@ router.post('/api/articlelist', function (req, res, next) {
 // 创建博客
 router.post('/api/addarticle', function (req, res, next) {
   let blogList = req.body
-  let sql = `insert into blogList SET ?`
+  let sql = `insert into blogList set ?`
   connection.query(sql, blogList, (error, result) => {
     if (error) {
       return res.json({
@@ -202,5 +202,16 @@ router.post('/api/upload', singleMidle, function (req, res, next) {
     imgUrl: `http://localhost:9000/uploads/${_imgurl}`
   })
 });
+
+// 留言接口
+router.post('/api/addinfo', function(req, res, next) {
+  // let title = req.body.title
+  // let content = req.body.content
+  // let starttiem = req.body.tiem
+  // let sql = `insert into blogcontent set ?`
+  // connection.query(sql, (error, result) => {
+
+  // })
+})
 
 module.exports = router

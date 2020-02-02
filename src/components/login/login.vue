@@ -95,7 +95,6 @@ export default {
   padding-right: 30px;
   box-sizing: border-box;
 }
-
 .content-block >>> .el-input__prefix, .content-block >>> .el-input__suffix {
   color: #08d711;
 }
