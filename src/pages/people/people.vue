@@ -124,7 +124,7 @@ export default {
   margin-left 100px
   .planes
     max-width 520px
-    margin 110px auto 
+    margin 90px auto 
     li
       margin-bottom 20px
       color #545555

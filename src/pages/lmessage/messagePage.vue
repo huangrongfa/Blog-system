@@ -70,10 +70,12 @@ export default {
             title: this.form.name,
             content: this.form.desc
           }).then(res => {
-            this.$message({
-              message: '提交成功',
-              type: 'success'
-            })
+            if (res.status === 200) {
+                this.$message({
+                message: '提交成功',
+                type: 'success'
+              })
+            }
           })
       }
     }

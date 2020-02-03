@@ -5,17 +5,15 @@
       <a href="javascript:;" class="anthour" @click="slider()">
         <i class="el-icon-s-fold icon-anthour"></i>牧羊少年后台管理系统
       </a>
-      <div class="user-infos" @click="handleShow()">
+      <div class="user-infos">
         <el-avatar icon="el-icon-user-solid"></el-avatar>
-        <span>{{isUser}}<i class="el-icon-arrow-down el-icon--right"></i></span>
-        <ul class="menus" v-show="ishidden">
-          <li>
-            <a href="javascript:;">个人中心</a>
-          </li>
-          <li>
-            <a href="javascript:;" @click="handleQuit()">退出</a>
-          </li>
-        </ul>
+        <el-dropdown trigger="click" @command="handleQuit()">
+          <span>{{isUser}}<i class="el-icon-arrow-down el-icon--right"></i></span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>个人中心</el-dropdown-item>
+            <el-dropdown-item>退出</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
     </el-header>
     <!-- 主体内容 -->
@@ -64,7 +62,6 @@ import {userinfo} from './request/api.js';
 export default {
   name: "app",
   data: () => ({
-    ishidden: false,
     show: true,
     onbtn: true, // 控制导航菜单切换
     hide: false
@@ -90,11 +87,7 @@ export default {
         this.$store.dispatch("saveInfo", res.data.username)
       });
     },
-    handleShow() {
-      this.ishidden = !this.ishidden;
-    },
     handleQuit() {
-      this.ishidden = false;
       this.$router.push("/");
       window.localStorage.removeItem("token");
     },
@@ -185,7 +178,6 @@ export default {
   border-bottom: 1px solid #dcdfe6;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
   transition: 0.2s ease-out;
-
   .user-infos {
     span {
       color: #909399;
@@ -264,6 +256,9 @@ export default {
     }
   }
 }
+.el-dropdown-menu
+  position absolute
+  top 55px!important
 </style>
 
 
