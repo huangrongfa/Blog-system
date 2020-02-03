@@ -17,21 +17,17 @@
               type="date"
               placeholder="选择日期"
               v-model="form.date1"
-              style="width: 100%;"
+              format="yyyy 年 MM 月 dd 日"
+              style="width: 100%"
+              value-format="yyyy-MM-dd"
             ></el-date-picker>
           </el-col>
         </el-form-item>
-        <el-form-item label="特殊资源">
-          <el-radio-group v-model="form.resource">
-            <el-radio label="线上品牌商赞助"></el-radio>
-            <el-radio label="线下场地免费"></el-radio>
-          </el-radio-group>
-        </el-form-item>
         <el-form-item label="留言内容">
-          <el-input type="textarea" v-model="form.desc"></el-input>
+          <el-input type="textarea" v-model="form.desc" rows="5"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit()" size="small">提交留言</el-button>
+          <el-button type="primary" @click="onSubmit()" size="medium">提交留言</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -39,6 +35,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import { adduserInfo } from '../../request/api.js'
 export default {
   data: () => ({
     form: {
@@ -64,7 +61,20 @@ export default {
             });
           }
         });
-        return false
+      } else {
+        if (this.form.name == '' || this.form.desc == '' || this.form.date1 == '') {
+          return false
+        }
+        adduserInfo({
+            id: '0002',
+            title: this.form.name,
+            content: this.form.desc
+          }).then(res => {
+            this.$message({
+              message: '提交成功',
+              type: 'success'
+            })
+          })
       }
     }
   }
@@ -75,8 +85,8 @@ export default {
   margin-left 190px
   margin-top 20px
   .el-form
-    width 480px
-    max-width 480px
+    width 520px
+    max-width 520px
     margin 0 100px
     .el-select
       width 100%

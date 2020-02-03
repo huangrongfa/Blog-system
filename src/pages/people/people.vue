@@ -10,7 +10,7 @@
             <li>籍贯：中国-河南</li>
             <li>电话：130****4310</li>
             <li>邮箱：7600******@qq.com</li>
-            <li>专业技能：Css/Vue.js/mySql/Redis/Node.js</li>
+            <li>专业技能：Css/Vue.js/mySql/Express/Node.js</li>
             <li>人生格言：你是要当一辈子的懦夫,还是要当英雄?哪怕只有几分钟,你需要的不仅仅是勇气,来自心底的革命呐喊,只为惊醒少数人!</li>
           </ul>
         </div>

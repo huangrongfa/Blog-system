@@ -195,7 +195,6 @@ router.post(`/api/blogdetail`, function (req, res, next) {
 
 // 图片上传
 router.post('/api/upload', singleMidle, function (req, res, next) {
-  console.log(req.file)
   let _imgurl = req.file.originalname
   res.json({
     code: 200,
@@ -205,13 +204,20 @@ router.post('/api/upload', singleMidle, function (req, res, next) {
 
 // 留言接口
 router.post('/api/addinfo', function(req, res, next) {
-  // let title = req.body.title
-  // let content = req.body.content
-  // let starttiem = req.body.tiem
-  // let sql = `insert into blogcontent set ?`
-  // connection.query(sql, (error, result) => {
-
-  // })
+  let contentbody = req.body
+  let sql = `insert into blogcontent set ?`
+  connection.query(sql, contentbody, (error, result) => {
+    if (error) {
+      return res.json({
+        status: -1,
+        meassge: '留言失败'
+      })
+    }
+    res.json({
+      status: 200,
+      meassage: '留言成功'
+    })
+  })
 })
 
 module.exports = router
