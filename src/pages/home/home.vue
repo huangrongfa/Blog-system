@@ -17,6 +17,7 @@
             </el-form-item>
             <el-button type="primary" icon="el-icon-search" size="medium" @click="handlesearch()">搜索</el-button>
             <el-button type="primary" icon="el-icon-plus" size="medium" @click="addhandle()">创建博客</el-button>
+            <el-button type="primary" size="medium" @click="clickButton($event)">测试socket</el-button>
           </el-form>
           <!--  -->
           <el-table
@@ -107,10 +108,11 @@ import {
   pagelist,
   userinfo
 } from "../../request/api.js";
-import { mapGetters } from "vuex";
+import { mapGetters } from "vuex"
 export default {
   data: () => ({
     tableData: [],
+    ids: '',
     formInline: {
       title: "",
       id: "",
@@ -133,14 +135,37 @@ export default {
   created() {
     this.handlelist()
   },
-  mounted() {},
+  mounted() {
+    // 接收后端返回的数据
+    this.sockets.subscribe('resultInfo', (data) => {
+      console.log(data)
+    })
+  },
   computed: {
     totalpages() {
       return parseInt(this.allPage * 6);
     }
   },
+  sockets: {
+    connect() {
+      console.log('链接成功！')
+    },
+    resultInfo(data) {
+      this.$notify({
+        title: '新消息通知',
+        message: data.message,
+        position: 'bottom-right',
+        duration: 1000
+      })
+    }
+  },
   components: {},
   methods: {
+    // 传递数据到后端websocket
+    clickButton(event) {
+      let vals = event.target.innerText
+      this.$socket.emit('login', vals)
+    },
     handlelist() {
       this.loading = true;
       pagelist({ currentPage: this.currentPage })
@@ -189,7 +214,7 @@ export default {
       this.dialogTableVisible = true;
     },
     handleSubmit() {
-      if (!this.dialogform.title || !this.dialogform.id) return false;
+      if (!this.dialogform.title || !this.dialogform.id) return false
       addarticle({
         id: this.dialogform.id,
         title: this.dialogform.title,
@@ -197,8 +222,8 @@ export default {
         type: this.dialogform.type,
         content: this.dialogform.content
       }).then(res => {
-        this.dialogTableVisible = false;
-      });
+        this.dialogTableVisible = false
+      })
     },
     handleclickdetail(row) {
       this.$router.push({
@@ -206,24 +231,25 @@ export default {
         query: {
           articleId: row.id
         }
-      });
+      })
     },
     handleCurrentChange(val) {
       pagelist({
         currentPage: val
       }).then(res => {
-        this.tableData = [...res.data];
+        this.tableData = [...res.data]
       });
     }
   },
-/*   // 进入路由的时候要做什么事情
-  beforeRouteEnter(to, from, next) {
-    console.log("进入该路由时执行");
-  },
+  // 进入路由的时候要做什么事情
+  // beforeRouteEnter(to, from, next) {
+  //   // console.log("进入该路由时执行");
+  //   // next()
+  // },
   // 离开的时候要做什么事情
-  beforeRouteLeave(to, from, next) {
-    console.log("离开该路由时执行");
-  } */
+  // beforeRouteLeave(to, from, next) {
+  //   console.log("离开该路由时执行");
+  // }
 };
 </script>
 <style lang="stylus" scoped>

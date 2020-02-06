@@ -1,7 +1,8 @@
 const fs = require('fs')
 const path = require('path')
-const express = require('express')
-const app = express()
+var app = require('express')()
+var http = require('http').Server(app)
+var io = require('socket.io')(http)
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
@@ -9,6 +10,7 @@ const session = require('express-session')
 const rotatingLogStream = require('file-stream-rotator')
 const morgan = require('morgan')
 const cors = require('cors')
+
 
 // 设置允许跨域
 app.use(cors())
@@ -25,10 +27,12 @@ let accesslog = rotatingLogStream.getStream({
 })
 app.use(morgan('combined', { stream: accesslog }))
 
+
 // 解析post提交数据
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+//解析cookie
 app.use(cookieParser())
 
 
@@ -37,12 +41,25 @@ const routes = require('./src/server/routes/index')
 app.use('/', routes)
 
 
-// const { redisClient } = require('./src/server/database/redis')
-
 //session存储在redis中
+// const { redisClient } = require('./src/server/database/redis')
 // const sessionStore = new redisStore({
 //   client: redisClient
 // })
+
+
+// 建立websocket链接
+io.on('connection', function(socket) {
+  // 接收客户端传递来的数据
+  socket.on('login', function(data) {
+    console.log(data)
+    // 发送数据到客户端
+    socket.emit('resultInfo', {
+      message: '我是后端返回的数据',
+      code: 200
+    })
+  })
+})
 
 
 let randomStr = Math.random().toString(36).substr(2)
@@ -61,6 +78,6 @@ app.use(session({
 
 
 
-app.listen(9000, () => {
-  console.log('Server is running at http://localhost:9000')
+http.listen(3000, () => {
+  console.log('Server is running at http://localhost:3000')
 })

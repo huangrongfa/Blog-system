@@ -14,11 +14,11 @@ module.exports = {
     open: true, // 自动打开浏览器
     proxy: {
       '/api': {
-        target: 'http://localhost:9000',
+        target: 'http://localhost:3000',
         pathRewrite: { // 路径重写
           '^/api': '/api'
         },
-        changeOrigin: true // 是否改变域名
+        changeOrigin: true // 允许跨域
       }
     },
     hotOnly: true // 开启热更新

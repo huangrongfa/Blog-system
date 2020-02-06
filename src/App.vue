@@ -88,8 +88,7 @@ export default {
       });
     },
     handleQuit() {
-      this.$router.push("/");
-      window.localStorage.removeItem("token");
+      this.$router.push("/")
     },
     slider() {
       if (this.onbtn) {

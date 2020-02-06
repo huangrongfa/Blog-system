@@ -5,9 +5,16 @@ import router from './router'
 import store from './vuex/index'
 import axios from 'axios'
 import VueWechatTitle from 'vue-wechat-title'
+import VueSocketIO from 'vue-socket.io'
 
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/reset.css'
+
+// 建立webSocket连接
+Vue.use(new VueSocketIO({
+  debug: true,
+  connection: 'http://localhost:3000'
+}))
 
 Vue.use(ElementUI)
 Vue.use(VueWechatTitle)
