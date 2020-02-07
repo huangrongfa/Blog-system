@@ -143,19 +143,22 @@ export default {
   },
   computed: {
     totalpages() {
-      return parseInt(this.allPage * 6);
+      return parseInt(this.allPage * 6)
     }
   },
   sockets: {
     connect() {
       console.log('链接成功！')
     },
+    disconnect() {
+      console.log('断开链接！')
+    },
     resultInfo(data) {
       this.$notify({
         title: '新消息通知',
         message: data.message,
         position: 'bottom-right',
-        duration: 1000
+        duration: 4500
       })
     }
   },

@@ -54,14 +54,16 @@ io.on('connection', function(socket) {
   socket.on('login', function(data) {
     console.log(data)
     // 发送数据到客户端
-    socket.emit('resultInfo', {
-      message: '我是后端返回的数据',
-      code: 200
-    })
+    setTimeout(() => {
+      socket.emit('resultInfo', {
+        message: '我是后端返回的数据',
+        code: 200
+      })
+    }, 5000)
   })
 })
 
-
+// 设置session
 let randomStr = Math.random().toString(36).substr(2)
 app.use(session({
   secret: randomStr, // 生成随机字符串
