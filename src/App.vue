@@ -30,7 +30,7 @@
           <li>
             <router-link to="home">
               <i class="el-icon-s-order"></i>
-              <span v-if="show">博客列表</span>
+              <span v-if="show">博客文章</span>
             </router-link>
           </li>
           <li>
@@ -40,7 +40,7 @@
             </router-link>
           </li>
           <li>
-            <router-link to>
+            <router-link to="likePage">
               <i class="el-icon-medal"></i>
               <span v-if="show">猜你喜欢</span>
             </router-link>
@@ -48,7 +48,7 @@
           <li>
             <router-link to="messagePage">
               <i class="el-icon-notebook-2"></i>
-              <span v-if="show">我的留言</span>
+              <span v-if="show">留言板</span>
             </router-link>
           </li>
         </ul>
@@ -58,7 +58,7 @@
   </div>
 </template>
 <script>
-import {userinfo} from './request/api.js';
+import {userinfo} from '@/request/api.js';
 export default {
   name: "app",
   data: () => ({

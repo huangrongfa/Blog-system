@@ -24,7 +24,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { getblogdetail, editblog } from "../../request/api.js"
+import { getblogdetail, editblog } from "@/request/api.js"
 import { mapState } from 'vuex'
 export default {
   data: () => ({

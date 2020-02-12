@@ -7,7 +7,24 @@ module.exports = {
   assetsDir: 'static', // 放置生成的静态资源 (js、css、img、fonts) 的 (相对于 outputDir 的) 目录。
   runtimeCompiler: true,
   lintOnSave: false,
-  productionSourceMap: false,
+  productionSourceMap: false, // 是否生产SourceMap文件
+  chainWebpack: () => {
+    if (isProduction) {
+      // 生产环境的配置
+    } else {
+      // 开发环境的配置
+    }
+  },
+  configureWebpack: (config) => {
+    Object.assign(config, {
+      resolve: {
+        //设置路径别名
+        alias: {
+          '@': path.resolve(__dirname, './src')
+        }
+      }
+    })
+  },
   devServer: {
     port: '8080',
     host: 'localhost',
@@ -25,7 +42,9 @@ module.exports = {
   },
   css: {
     extract: true, // 是否将组件中的 CSS 提取至一个独立的 CSS 文件
-    sourceMap: false, 
+    sourceMap: false, // 
     modules: false
-  }
+  },
+  // 是否启用dll
+  parallel: require('os').cpus().length > 1,
 }

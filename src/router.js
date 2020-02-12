@@ -16,7 +16,7 @@ const homedetail = resolve => require.ensure([], () => resolve(require('./pages/
 const people = resolve => require.ensure([], () => resolve(require('./pages/people/people.vue')))
 const wonder = resolve => require.ensure([], () => resolve(require('./pages/wonderful/wonderPage.vue')))
 const messagePage = resolve => require.ensure([], () => resolve(require('./pages/lmessage/messagePage.vue')))
-
+const likePage = resolve => require.ensure([], () => resolve(require('./pages/like/likePage.vue')))
 
 const router = new Router({
   mode: 'history',
@@ -59,6 +59,14 @@ const router = new Router({
       component: wonder,
       meta: {
         title: '精彩生活'
+      }
+    },
+    {
+      path: '/likePage',
+      name: 'likePage',
+      component: likePage,
+      meta: {
+        title: '猜你喜欢'
       }
     },
     {

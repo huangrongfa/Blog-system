@@ -11,7 +11,6 @@ const rotatingLogStream = require('file-stream-rotator')
 const morgan = require('morgan')
 const cors = require('cors')
 
-
 // 设置允许跨域
 app.use(cors())
 
@@ -76,9 +75,6 @@ app.use(session({
   resave: true, // 允许重新设置session
   // store: sessionStore
 }))
-
-
-
 
 http.listen(3000, () => {
   console.log('Server is running at http://localhost:3000')

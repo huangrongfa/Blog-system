@@ -6,6 +6,8 @@ import store from './vuex/index'
 import axios from 'axios'
 import VueWechatTitle from 'vue-wechat-title'
 import VueSocketIO from 'vue-socket.io'
+// import VCharts from 'v-charts'
+import VeLine from 'v-charts/lib/line.common'
 
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/reset.css'
@@ -15,6 +17,8 @@ Vue.use(new VueSocketIO({
   debug: true,
   connection: 'http://localhost:3000'
 }))
+
+Vue.component(VeLine.name, VeLine)
 
 Vue.use(ElementUI)
 Vue.use(VueWechatTitle)

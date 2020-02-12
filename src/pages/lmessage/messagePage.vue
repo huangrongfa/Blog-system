@@ -35,7 +35,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { adduserInfo } from '../../request/api.js'
+import { adduserInfo } from '@/request/api.js'
 export default {
   data: () => ({
     form: {

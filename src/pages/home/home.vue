@@ -107,7 +107,7 @@ import {
   addarticle,
   pagelist,
   userinfo
-} from "../../request/api.js";
+} from "@/request/api.js";
 import { mapGetters } from "vuex"
 export default {
   data: () => ({

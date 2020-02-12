@@ -2,26 +2,19 @@
   <div class="people-block">
     <el-main>
       <div class="pelple-body">
-      <div class="upload-content">
-        <el-upload
-        class="upload-demo"
-        drag
-        action="http://localhost:8080/api/upload"
-        multiple
-        name="imgurl"
-        :on-success="handleAvatarSuccess"
-        :before-upload="beforeAvatarUpload">
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-      </el-upload>
-      </div>
-        <div class="wonder-planes">
-          <ul>
-            <li v-for="items in imgdata" :key="items.id">
-              <img :src="items.url" alt="">
-            </li>
-          </ul>
+        <div class="upload-content">
+          <el-upload
+          class="upload-demo"
+          drag
+          action="http://localhost:8080/api/upload"
+          multiple
+          name="imgurl"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload">
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+          <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+        </el-upload>
         </div>
       </div>
     </el-main>
@@ -29,30 +22,13 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { uploadImg } from '../../request/api.js'
+import { uploadImg } from '@/request/api.js'
 export default {
   data: () => ({
     show: true,
     ishidden: false,
     circleUrl: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-    imgdata: [
-      {
-        url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        id: '001'
-      },
-      {
-        url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        id: '002'
-      },
-            {
-        url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        id: '003'
-      },
-      {
-        url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        id: '004'
-      }],
-      limitNum: 2, // 允许上传图片最大数
+    limitNum: 2, // 允许上传图片最大数
   }),
   created() {},
   mounted() {
@@ -88,9 +64,6 @@ export default {
     handleAvatarSuccess(res, file) {
       alert('上传成功')
     },
-    handleShow() {
-
-    },
     handleQuit() {
       this.$router.push('/')
     }
@@ -120,63 +93,6 @@ export default {
     color #909399
     .icon-anthour
       margin-right 5px
-  .menus
-    height 100px
-    width 120px
-    position absolute
-    right 15px
-    top 72px
-    background-color #fff
-    border 1px solid #ebeef5
-    border-radius 4px
-    box-shadow 0 2px 12px 0 rgba(0,0,0,.1)
-    z-index 5
-    li
-      margin-top 6px
-    &::before
-      position: absolute
-      display: block
-      width: 0
-      height: 0
-      border-color: transparent
-      border-style: solid
-      border-bottom-color: #ebeef5
-      content ''
-      top -14px
-      left 55px
-      border-width: 7px
-    &::after
-      position: absolute
-      display: block
-      width: 0
-      height: 0
-      border-color: transparent
-      border-style: solid
-      border-bottom-color: #fff
-      content ''
-      top -12px
-      left 53px
-      margin-left 3px
-      border-width: 6px
-    a
-      display block
-      height 40px
-      line-height 40px
-      text-align center
-      &:hover
-        background-color #ecf5ff
-        color #66b1ff
-      &.active
-        background-color #ecf5ff
-        color #66b1ff
-.plane-footer
-  text-align center
-  color #909399
-  font-size 14px
-  line-height 60px
-  position fixed
-  bottom 0
-  width 100%
 .pelple-body
   margin-left 200px
   .wonder-planes
@@ -192,7 +108,9 @@ export default {
         max-width 100%
         display block
   .upload-content
-    max-width 360px
-    width 360px
+    max-width 520px
+    width 520px
     margin-bottom 20px
+    >>>.el-upload-dragger
+          width 520px
 </style>
