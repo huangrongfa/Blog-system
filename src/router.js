@@ -20,6 +20,7 @@ const likePage = resolve => require.ensure([], () => resolve(require('./pages/li
 
 const router = new Router({
   mode: 'history',
+  linkActiveClass: 'active',
   routes: [
     {
       path: '/',

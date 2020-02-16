@@ -11,7 +11,7 @@
           <span>{{isUser}}<i class="el-icon-arrow-down el-icon--right"></i></span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>个人中心</el-dropdown-item>
-            <el-dropdown-item>退出234255</el-dropdown-item>
+            <el-dropdown-item>退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -137,13 +137,15 @@ export default {
       font-size: 14px;
       padding-left: 15px;
       color: #bfcbd9;
-
       i {
         margin-right: 5px;
         font-size: 16px;
       }
-
       &:hover {
+        background: #223041 !important;
+        color: #20a0ff;
+      }
+      &.active {
         background: #223041 !important;
         color: #20a0ff;
       }
