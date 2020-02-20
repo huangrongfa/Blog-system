@@ -78,13 +78,13 @@ export default {
       }
     }
   },
-  created() {
+  mounted() {
     this.getuserinfo()
   },
   methods: {
     getuserinfo() {
       userinfo().then(res => {
-        this.$store.dispatch("saveInfo", res.data.username)
+        this.$store.dispatch('saveInfo', res.data.username)
       });
     },
     handleQuit() {

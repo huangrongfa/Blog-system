@@ -58,7 +58,7 @@ export default {
             window.localStorage.setItem('token', res.data.token)
             setTimeout(function() {
               that.$router.push("home")
-            }, 600)
+            }, 800)
           })
         } else {
           return false
